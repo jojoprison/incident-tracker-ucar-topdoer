@@ -2,6 +2,7 @@
 
 ## Стек
 
+- **Python** 3.12.x
 - **Django** 5.2.x
 - **Django REST Framework** 3.16.x
 - **PostgreSQL** 16
