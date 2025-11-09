@@ -7,6 +7,7 @@ from .models import Incident
 class IncidentAdmin(admin.ModelAdmin):
     list_display = ("id", "short_text", "status", "source", "created_at")
     list_display_links = ("id", "short_text")
+    list_editable = ("status",)
     list_filter = ("status", "source")
     search_fields = ("text",)
     ordering = ("-id",)
