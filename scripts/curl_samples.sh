@@ -26,6 +26,10 @@ list_filtered_new() {
   curl -sS "$base_url/api/v1/incidents/?status=new" | pp
 }
 
+list_all() {
+  curl -sS "$base_url/api/v1/incidents/" | pp
+}
+
 update_status() {
   local id=${1:-1}
   curl -sS -X PATCH "$base_url/api/v1/incidents/$id/status/" \
@@ -37,6 +41,7 @@ case "${1:-}" in
   admin|create-admin) create_admin;;
   create) create;;
   list-new) list_filtered_new;;
+  list-all) list_all;;
   update) update_status "${2:-1}";;
-  *) echo "Usage: $0 {admin|create|list|update [id]}"; exit 2;;
+  *) echo "Usage: $0 {admin|create|list-new|list-all|update [id]}"; exit 2;;
  esac
