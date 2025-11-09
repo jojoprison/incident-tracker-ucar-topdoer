@@ -91,3 +91,67 @@
 
 - При старте `entrypoint.sh` выполняется `makemigrations incidents` (идемпотентно) и `migrate`.
 - Используйте `pre-commit`, чтобы автоматически проверять стиль (black/ruff) перед коммитами.
+
+## Примеры запросов (cURL)
+
+- **Создать инцидент**
+  ```bash
+  curl -X POST http://localhost:8000/api/v1/incidents/ \
+    -H "Content-Type: application/json" \
+    -d '{"text":"Не могу снять бронь с автомобиля","source":"partner","status":"new"}'
+  ```
+
+- **Список всех**
+  ```bash
+  curl http://localhost:8000/api/v1/incidents/
+  ```
+
+- **Список по статусу (new)**
+  ```bash
+  curl "http://localhost:8000/api/v1/incidents/?status=new"
+  ```
+
+- **Обновить статус на resolved (id=1)**
+  ```bash
+  curl -X PATCH http://localhost:8000/api/v1/incidents/1/status/ \
+    -H "Content-Type: application/json" \
+    -d '{"status":"resolved"}'
+  ```
+
+## FAQ / Troubleshooting
+
+- **Сервис не поднимается / healthcheck падает**
+    - Проверьте логи: `make logs` (и отдельно `docker compose logs db`).
+    - Убедитесь, что порты 8000/5432 свободны на хосте.
+    - Проверьте, что есть `.env` и корректные переменные подключения к БД (в контейнере `POSTGRES_HOST=db`).
+
+- **После `make down` всё «пропало»**
+    - Команда выполняет `docker compose down -v` и УДАЛЯЕТ volume c БД. Это ожидаемо.
+    - Подними заново `make up-b` и снова создай админа: `make admin`.
+
+- **`/` отдаёт 404**
+    - Это нормально. Используйте `/api/v1/`, или открой
+      доку: [Swagger UI](http://localhost:8000/api/docs/) / [Redoc](http://localhost:8000/api/redoc/).
+
+- **`make test` не находит тесты (0 tests)**
+    - Тесты лежат в `tests/`, внутри контейнера они монтируются (`docker-compose.yml`).
+    - Имена файлов должны быть вида `test_*.py` (см. `tests/test_incidents.py`).
+    - Конфигурация `pytest.ini` смонтирована и применится автоматически. Запуск: `make test`.
+
+- **Ошибка таймзоны: `Incorrect timezone setting: Moscow/Europe`**
+    - Укажите корректный IANA-идентификатор: `TIME_ZONE=Europe/Moscow` в `.env`.
+
+- **Не могу войти в админку**
+    - Создайте суперпользователя: `make admin` (логин/пароль `admin/admin`). Команда идемпотентна.
+
+- **`curl-update` не меняет запись**
+    - Команда обновляет id=1. Посмотрите реальные id: `make curl-list-all`.
+    - После `make down` БД пустая — создайте данные заново.
+
+- **pre-commit не ставится/не работает**
+    - Установите dev-зависимости: `uv sync` (в контейнере это уже выполняется при сборке).
+    - Поставьте хуки: `make pre-commit`.
+
+- **CORS/безопасность**
+    - Проект в dev-режиме: API открыт (`AllowAny`) для простоты тестирования. В проде требуются аутентификация и жёсткие
+      настройки безопасности.
