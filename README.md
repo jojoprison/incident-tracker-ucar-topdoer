@@ -82,7 +82,7 @@
 - Docker Compose:
     - сервис `backend` (Django server)
     - база `db` (PostgreSQL 16)
-    - готовность БД контролируется healthcheck в compose; ожидание в `entrypoint.sh` удалено
+    - готовность БД контролируется `healthcheck` в compose
 - Настройки:
     - таймзона через ENV `TIME_ZONE` (по умолчанию `Europe/Moscow`)
     - для удобства тестов API открыт (`AllowAny`) — не для продакшена
