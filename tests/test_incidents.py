@@ -3,6 +3,8 @@ import json
 import pytest
 from rest_framework.test import APIClient
 
+pytestmark = pytest.mark.django_db
+
 
 @pytest.fixture()
 def api():
@@ -10,13 +12,11 @@ def api():
 
 
 def test_create_incident_201_and_defaults(api):
-
     payload = {"text": "Самокат оффлайн", "source": "operator"}
     resp = api.post(
         "/api/v1/incidents/",
         data=json.dumps(payload),
-        content_type="application/json"
-
+        content_type="application/json",
     )
     assert resp.status_code == 201, resp.content
 
@@ -29,14 +29,12 @@ def test_create_incident_201_and_defaults(api):
 
 
 def test_list_filter_by_status(api):
-
     for status in ("new", "investigating", "resolved"):
-
         payload = {"text": f"{status}", "source": "partner", "status": status}
         r = api.post(
             "/api/v1/incidents/",
             data=json.dumps(payload),
-            content_type="application/json"
+            content_type="application/json",
         )
 
         assert r.status_code == 201
