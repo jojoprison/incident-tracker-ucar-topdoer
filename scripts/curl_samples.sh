@@ -22,8 +22,8 @@ create() {
     -d '{"text":"Не могу снять бронь с автомобиля","source":"partner","status":"new"}' | pp
 }
 
-list_filtered() {
-  curl -sS "$base_url/api/v1/incidents/?status=investigating" | pp
+list_filtered_new() {
+  curl -sS "$base_url/api/v1/incidents/?status=new" | pp
 }
 
 update_status() {
@@ -36,7 +36,7 @@ update_status() {
 case "${1:-}" in
   admin|create-admin) create_admin;;
   create) create;;
-  list) list_filtered;;
+  list-new) list_filtered_new;;
   update) update_status "${2:-1}";;
   *) echo "Usage: $0 {admin|create|list|update [id]}"; exit 2;;
  esac
