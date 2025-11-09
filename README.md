@@ -18,8 +18,10 @@
 1. Скопируйте переменные окружения:
    ```bash
    cp .env.example .env
-   # по желанию укажите таймзону
-   # TIME_ZONE=Europe/Moscow
+   ```
+   Опционально: задайте таймзону в `.env` (например):
+   ```bash
+   echo 'TIME_ZONE=Europe/Moscow' >> .env
    ```
 2. Соберите и запустите контейнеры:
    ```bash
@@ -27,8 +29,9 @@
    ```
 3. Создайте суперпользователя для админки:
    ```bash
-   make admin  # admin / admin
+   make admin
    ```
+   Логин/пароль: `admin/admin`.
 4. Админка: http://localhost:8000/admin (логин/пароль: admin/admin)
 5. Смоук API (создать → показать new → обновить статус):
    ```bash
@@ -36,10 +39,13 @@
    ```
 6. Проверки качества кода:
    ```bash
-   make test    # pytest в контейнере
-   make format  # black + ruff format
-   make lint    # ruff check
+   make test
+   make format
+   make lint
    ```
+    - make test — pytest в контейнере
+    - make format — black + ruff format
+    - make lint — ruff check
 7. Pre-commit хуки (единый стиль в команде):
    ```bash
    make pre-commit
@@ -83,5 +89,5 @@
 
 ## Примечания
 
-- При старте `entrypoint.sh` выполняет `makemigrations incidents` (идемпотентно) и `migrate`.
+- При старте `entrypoint.sh` выполняется `makemigrations incidents` (идемпотентно) и `migrate`.
 - Используйте `pre-commit`, чтобы автоматически проверять стиль (black/ruff) перед коммитами.
