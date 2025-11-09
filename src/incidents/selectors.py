@@ -1,11 +1,9 @@
-from typing import Optional
-
 from django.db.models import QuerySet
 
 from .models import Incident, IncidentStatus
 
 
-def list_incidents(status: Optional[str] = None) -> QuerySet[Incident]:
+def list_incidents(status: str | None = None) -> QuerySet[Incident]:
     qs = Incident.objects.all()
 
     if status:

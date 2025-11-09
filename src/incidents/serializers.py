@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Incident, IncidentStatus, IncidentSource
+from .models import Incident, IncidentSource, IncidentStatus
 
 
 class IncidentCreateSerializer(serializers.Serializer):

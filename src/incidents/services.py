@@ -1,9 +1,7 @@
-from typing import Optional
-
 from .models import Incident
 
 
-def create_incident(*, text: str, source: str, status: Optional[str] = None) -> Incident:
+def create_incident(*, text: str, source: str, status: str | None = None) -> Incident:
     data: dict = {"text": text, "source": source}
 
     if status is not None:

@@ -24,33 +24,26 @@ class IncidentViewSet(viewsets.GenericViewSet):
         return IncidentSerializer
 
     def list(self, request):
-
         status_param = request.query_params.get("status")
 
         try:
             qs = list_incidents(status_param)
         except ValueError as e:
-            return Response(
-                {"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = IncidentSerializer(qs, many=True)
         return Response(serializer.data)
 
     def create(self, request):
-
         serializer = IncidentCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         incident = create_incident(**serializer.validated_data)
 
-        return Response(
-            IncidentSerializer(incident).data, status=status.HTTP_201_CREATED
-        )
+        return Response(IncidentSerializer(incident).data, status=status.HTTP_201_CREATED)
 
     @action(detail=True, methods=["patch"], url_path="status")
     def status(self, request, pk=None):
-
         instance = get_object_or_404(Incident, pk=pk)
 
         serializer = StatusUpdateSerializer(data=request.data)
