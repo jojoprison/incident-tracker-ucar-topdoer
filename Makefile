@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: help up up-b down logs shell bash migrate makemigrations test admin curl-create curl-list curl-update curl-smoke format lint pre-commit-install
+.PHONY: help up up-b down logs shell bash migrate makemigrations test admin curl-create curl-list curl-update curl-smoke format lint pre-commit
 
 help:
 	@echo "Targets:"
@@ -21,7 +21,7 @@ help:
 	@echo "  test          - run pytest in container"
 	@echo "  format        - black + ruff format"
 	@echo "  lint          - ruff check"
-	@echo "  pre-commit-install - install hooks"
+	@echo "  pre-commit    - install hooks"
 
 up:
 	docker compose up -d
@@ -74,5 +74,5 @@ format:
 lint:
 	uv run ruff check src
 
-pre-commit-install:
+pre-commit:
 	uv run pre-commit install
